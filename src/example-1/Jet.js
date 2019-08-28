@@ -1,60 +1,13 @@
 import React from 'react';
 import './jet.scss';
 import anime from 'animejs'
+import * as ASM from './AnimStateMachine'
 
-
-
-const styles = {
-    rocket: {
-        position: 'absolute',
-        top: '20%',
-        width: 80,
-        left: 'calc(50% - 60px)'
-    },
-    rocketWrap: {
-        width: 80,
-    },
-    body: {
-        backgroundColor: '#dadada',
-        height: 180,
-        left: 'calc(50%-50px)',
-        borderTopRightRadius: '100%',
-        borderTopLeftRadius: '100%',
-        borderBottomLeftRadius: '50%',
-        borderBottomRightRadius: '50%',
-        borderTop: '5px solid #eeeeee'
-    }
-}
-
-const animStates = {
-    default: {
-        duration: 2000,
-        bottom: 100 + Math.random() * 400,
-        scale: 1,
-    },
-    flyFast: {
-        keyframes: [
-            {
-                bottom: 100 + Math.random() * 400,
-                scale: 1,
-            },
-            {
-                translateY: [100, -500, 400, 0],
-                scale: 1
-            }
-        ],
-        duration: 5000,
-    },
-    shake: {
-        keyframes: [
-
-        ]
-    }
-}
 
 export default class Rocket extends React.Component {
 
     state = {
+        clicked: false,
         animation: {
             transtateX: 100,
         }
@@ -68,52 +21,33 @@ export default class Rocket extends React.Component {
         this.y = 0;
         this.friction = 0.01;
         this.animating = false
+
         window.addEventListener('mousemove', this.handleMouseMove)
     }
 
     componentDidMount() {
 
-        anime({
-            targets: this.rocket,
-            duration: 1000,
-            bottom: 150 + Math.random() * 100,
-            easing: 'easeInOutCubic',
-            scale: 2,
-            complete: () => {
-                anime({
-                    targets: this.rocket,
-                    keyframes: [
-                        {
-                            translateY: 50,
-                            scale: 1,
-                            duration: 1000,
-                        },
-                        {
-                            duration: 1000,
-                            translateY: -300,
-                            scale: 1
-                        },
-                        {
-                            duration: 2000,
-                            translateY: 0,
-                            scale: 1
-                        },
-                        {
-                            duration: 1000,
-                            translateX: 100,
-                            scale: 1
-                        }
-                    ],
-                    easing: 'easeInOutCubic',
-                    duration: 500,
-                    complete: () => {
-                        this.x = 100
-                        this.mouseGestResponse()
-                    }
-                }
-                )
-            }
+        //creating Animation State Machine
+        this.AnimStateMachine = new ASM.AnimStateMachine(this.rocket)
+
+        //Adding animations
+        this.AnimStateMachine.addAnim('flyright', {
+            translateX: 300,
+            duration: 1000
         })
+
+        this.AnimStateMachine.addAnim('flyleft', {
+            translateX: -300,
+            duration: 5000
+        })
+        
+        //adding transition
+        this.AnimStateMachine.addTransition('flyright', 'flyleft', () => window.scrollY > 500)
+        this.AnimStateMachine.addTransition('flyleft', 'flyright', () => window.scrollY < 10)
+
+        //start
+        this.AnimStateMachine.enableProfiling()
+        this.AnimStateMachine.start()
 
     }
 
@@ -123,7 +57,6 @@ export default class Rocket extends React.Component {
         var a = `translate(${this.x}px, ${this.y-0}px) scale(1)`
         this.rocket.style.transform = a;
         requestAnimationFrame(this.mouseGestResponse)
-
     }
 
     handleMouseMove = (e) => {
@@ -135,7 +68,9 @@ export default class Rocket extends React.Component {
 
     render() {
         return (
-            <div class="rocket" ref={ref => this.rocket = ref} 
+            <div style={{width:'100%', height:window.innerHeight*2}}>
+            <div class="rocket" ref={ref => this.rocket = ref} style={{position:'fixed'}}
+                onClick={() => this.setState({clicked: true})} 
             >
                 <div class="rocket-body" >
                     <div class="body" ></div>
@@ -144,6 +79,7 @@ export default class Rocket extends React.Component {
                     <div class="window"></div>
                 </div>
                 <div class="exhaust-flame"></div>
+            </div>
             </div>
         )
     }
