@@ -1,7 +1,11 @@
 {
   "name": "anime-state-machine",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.2",
+  "private": false,
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": "“Felix Tran <felixtran2000@gmail.com”> (https://tphuc.github.io)",
+  "homepage": "https://github.com/tphuc/anime-state-machine",
   "dependencies": {
     "animejs": "^3.1.0",
     "eslint-utils": "^1.4.2",
@@ -14,6 +18,7 @@
     "react-scripts": "3.1.1"
   },
   "scripts": {
+    "prepublishOnly": "babel ./src --out-dir ./dist -s inline",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -33,5 +38,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
+  "files": [
+    "dist/*"
+  ]
 }
