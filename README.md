@@ -59,7 +59,7 @@ export default class Example extends React.Component {
     render() {
         return (
             <div 
-                ref = {(ref => this.object = ref} 
+                ref = {ref => this.object = ref} 
                 style = {styles}
             />
         )

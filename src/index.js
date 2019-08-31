@@ -1,4 +1,4 @@
 import AnimStateMachine from './Components/AnimStateMachine'
 
 
-export default AnimStateMachine;
+export default AnimStateMachine
