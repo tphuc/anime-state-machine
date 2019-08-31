@@ -4,15 +4,13 @@ import React from 'react';
 import AnimBlueprint from '../example-1/AnimBlueprint'
 
 
-
-
 export const creatAnimation = (animName, animProps, onEnter, onExit) => {
     return new AnimNode(animName, animProps, onEnter, onExit)
 }
 
 
-export class AnimStateMachine{
-    constructor(target){
+export class AnimStateMachine {
+    constructor(target) {
         this.target = target
         this.animGraph = []
         this.transitGraph = []
@@ -29,7 +27,7 @@ export class AnimStateMachine{
         for (var i = 0; i < this.animGraph.length; i++) {
             if (this.animGraph[i].getName() === fromAnim) {
                 var transit = this.animGraph[i].addTransition(toAnim, condition)
-                if(this._checkTransitionReverse(fromAnim, toAnim)) transit.paired = true
+                if (this._checkTransitionReverse(fromAnim, toAnim)) transit.paired = true
                 this.transitGraph.push(transit)
             }
         }
@@ -54,30 +52,37 @@ export class AnimStateMachine{
 
     loop = (t) => {
         var animToPlay = this.getAnimNodeByName(this.getCurrentPlayingAnim().getNextAnim())
-        if(animToPlay.getName() !== this.currentPlayingAnim){
+        if (animToPlay.getName() !== this.currentPlayingAnim) {
             this.playAnim = animToPlay.getAnimeInstance(this.target)
             this.currentPlayingAnim = animToPlay.getName()
-            
-        }
-        if(this.AnimBlueprint) this.AnimBlueprint.setActiveNode(this.getAnimNodeByName(this.currentPlayingAnim))
 
-        
+        }
+        if (this.AnimBlueprint) this.AnimBlueprint.setActiveNode(this.getAnimNodeByName(this.currentPlayingAnim))
+
+
         this.playAnim.tick(t)
-        requestAnimationFrame(this.loop)
+        this.newWindow.requestAnimationFrame(this.loop)
     }
 
-    enableProfiling = () => {
-        var blueprint = document.createElement('div')
-        blueprint.style.minWidth = '500px'
-        blueprint.style.minHeight = '500px'
-        blueprint.setAttribute('id', 'blueprint-node-anim')
-        document.body.append(blueprint)
-        ReactDOM.render(<AnimBlueprint ref={ref => this.AnimBlueprint = ref} animNodes={this.animGraph} transitions={this.transitGraph}> </AnimBlueprint>, document.getElementById('blueprint-node-anim'))
+    enableWindowProfiling = (width = 800, height = 600) => {
+        if (!this.newWindow) {
+            this.newWindow = window.open('', 'ASM', `width=${width},height=${height}`)
+            this.newWindow.document.body.style.overflow = 'hidden';
+            var blueprint = this.newWindow.document.createElement('div')
+            blueprint.setAttribute('id', 'blueprint-node-anim')
+            this.newWindow.document.body.append(blueprint)
+            ReactDOM.render(<AnimBlueprint window={this.newWindow} initClientWidth={width} initClientHeight={height} ref={ref => this.AnimBlueprint = ref} animNodes={this.animGraph} transitions={this.transitGraph}> </AnimBlueprint>, this.newWindow.document.getElementById('blueprint-node-anim'))
+
+
+        }
+        this.newWindow.focus()
+
     }
 
     _checkTransitionReverse = (fromAnim, toAnim) => {
-        for(var i = 0; i < this.transitGraph.length; i++){
-            if(this.transitGraph[i].id === toAnim + ' ' + fromAnim){
+        for (var i = 0; i < this.transitGraph.length; i++) {
+            if (this.transitGraph[i].id === toAnim + ' ' + fromAnim) {
+                this.transitGraph[i].paired = true
                 return true
             }
         }
@@ -115,13 +120,13 @@ export class AnimNode {
 
     getData = () => this.animeJsProps
 
-    addTransition = (toAnim, condition) => { 
-         var transition = new AnimTransition(this.name, toAnim, condition);
-         transition.id = this.name + ' ' + toAnim
-         this.transitions.push(transition); 
-         return transition 
+    addTransition = (toAnim, condition) => {
+        var transition = new AnimTransition(this.name, toAnim, condition);
+        transition.id = this.name + ' ' + toAnim
+        this.transitions.push(transition);
+        return transition
     }
-    
+
     getNextAnim = () => {
         for (var i = 0; i < this.transitions.length; i++) {
             var animName = this.transitions[i].conditionEvaluate()
@@ -138,7 +143,7 @@ export class AnimNode {
             autoplay: false,
             complete: this.onExit,
         })
-    }    
+    }
 
 
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import './jet.scss';
-import anime from 'animejs'
 import * as ASM from './AnimStateMachine'
 
 
@@ -33,11 +32,13 @@ export default class Rocket extends React.Component {
         //Adding animations
         this.AnimStateMachine.addAnim('flyright', {
             translateX: 300,
-            duration: 1000
+            rotateY: 0,
+            duration: 1000,
         })
 
         this.AnimStateMachine.addAnim('flyleft', {
             translateX: -300,
+            rotateY: 90,
             duration: 5000
         })
         
@@ -46,7 +47,7 @@ export default class Rocket extends React.Component {
         this.AnimStateMachine.addTransition('flyleft', 'flyright', () => window.scrollY < 10)
 
         //start
-        this.AnimStateMachine.enableProfiling()
+        this.AnimStateMachine.enableWindowProfiling()
         this.AnimStateMachine.start()
 
     }
@@ -69,16 +70,14 @@ export default class Rocket extends React.Component {
     render() {
         return (
             <div style={{width:'100%', height:window.innerHeight*2}}>
-            <div class="rocket" ref={ref => this.rocket = ref} style={{position:'fixed'}}
-                onClick={() => this.setState({clicked: true})} 
-            >
-                <div class="rocket-body" >
-                    <div class="body" ></div>
-                    <div class="fin fin-left"></div>
-                    <div class="fin fin-right"></div>
-                    <div class="window"></div>
+            <div className="rocket" ref={ref => this.rocket = ref} style={{position:'fixed'}}>
+                <div className="rocket-body" >
+                    <div className="body" ></div>
+                    <div className="fin fin-left"></div>
+                    <div className="fin fin-right"></div>
+                    <div className="window"></div>
                 </div>
-                <div class="exhaust-flame"></div>
+                <div className="exhaust-flame"></div>
             </div>
             </div>
         )
