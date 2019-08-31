@@ -7,5 +7,5 @@ Testing available:
 
 ```
     yarn
-    cd example-1/ && yarn start
+    yarn start
 ```
