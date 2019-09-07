@@ -78,11 +78,11 @@ export default class Example extends React.Component {
 ```
 
 
-## APIs 
-- Components breakdown:
+# APIs 
+  - Components breakdown:
   
   ------------------------
-  ### Anim State Machine(ASM)
+  ## ANIM STATE MACHINE (ASM)
     - Method
     ``` js 
     new ASM(object) 
@@ -106,7 +106,7 @@ export default class Example extends React.Component {
   ```
     
   -----------
-  ### ADD ANIMATIONS
+  ## ADD ANIMATIONS
     - Method:
     ```js
       addAnim(animationName, animejsProperties)
@@ -121,7 +121,7 @@ export default class Example extends React.Component {
     - for more info about **animejsProperties** checkout https://animejs.com/documentation/
 
   -----------
-  ### ADD TRANSITIONS
+  ## ADD TRANSITIONS
     - Method
     ```js
       addTransition(
@@ -169,7 +169,7 @@ export default class Example extends React.Component {
       )
     ```
   ---------
-  ### Visual Profiling Tool
+  ## VISUAL PROFILING TOOL
 
     ```js
       enableWindowProfiling()
