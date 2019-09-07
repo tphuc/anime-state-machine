@@ -14,7 +14,7 @@ or
 ```
 
 
-## BASIC USE:
+## GET STARTED:
 
 ``` javascript
 import React from 'react';
@@ -77,16 +77,17 @@ export default class Example extends React.Component {
 }  
 ```
 
+
 ## APIs 
 - Components breakdown:
-  ### ASM 
-    - ASM is a "container" that contains Animations and Transitions. 
-
-    Constructor:
+  
+  ------------------------
+  ### Anim State Machine(ASM)
+    - Method
     ``` js 
     new ASM(object) 
     ```
-    Example:
+    - Example:
     ``` js
     function MyObject() {
       const myObjectRef = useRef();
@@ -104,13 +105,13 @@ export default class Example extends React.Component {
     }
   ```
     
-  
-  ### ASM.Anim
-
+  -----------
+  ### ADD ANIMATIONS
+    - Method:
     ```js
       addAnim(animationName, animejsProperties)
     ```
-    - example: 
+    - Example: 
     ```js
       addAnim('flipOver', {
         duration: 3000,
@@ -119,35 +120,62 @@ export default class Example extends React.Component {
     ```
     - for more info about **animejsProperties** checkout https://animejs.com/documentation/
 
-  ### ASM.Transition
-      ```js
-        addTransition(
-              fromAnimation, 
-              toAnimation, 
-              conditionCallBack, 
-              onEnterCallBack, 
-              onExitCallBack)
-      ```
+  -----------
+  ### ADD TRANSITIONS
+    - Method
+    ```js
+      addTransition(
+            fromAnimation, 
+            toAnimation, 
+            condition, 
+            onEnterCallBack, 
+            onExitCallBack)
+    ```
 
-      - example:
 
-      ```js
+
+    - Example:
+    ```js
+      addTransition( 
+        'flyright',
+        'flyleft',
+        () => { window.scrollY > 600 },
+        () => { console.log('enter flyleft')},
+        () => { console.log('exit flyleft')}
+      )
+    ```
+
+    ```js
         addTransition( 
           'flyright',
           'flyleft',
-          () => { window.scrollY > 600 },
+          (timeRatio) => {
+            // timeRatio = currentAnimTime / totalAnimDuration
+            return timeRatio > 0.8
+          },
           () => { console.log('enter flyleft')},
           () => { console.log('exit flyleft')}
         )
-      ```
+    ```
 
-  ### Visual Profiling Tool
-  - To turn on visual profiling
     ```js
-      .enableWindowProfiling()
+      // or
+      addTransition( 
+        'flyright',
+        'flyleft',
+        'auto', // equivalent to timeRatio === 1
+        () => { console.log('enter flyleft')},
+        () => { console.log('exit flyleft')}
+      )
+    ```
+  ---------
+  ### Visual Profiling Tool
+
+    ```js
+      enableWindowProfiling()
     ```
 
 ## Screenshots
-![]
+  ![](https://github.com/tphuc/anime-state-machine/blob/master/docs/Screen%20Shot%202019-09-03%20at%201.51.30%20PM.png?raw=true)
  
 
