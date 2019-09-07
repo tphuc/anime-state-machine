@@ -113,16 +113,21 @@ export default class Example extends React.Component {
   - Method:
   
     ```js
-    addAnim(animationName,animejsProperties)
+    addAnim(animationName,animejsProperties, onEnterCallBack, onExitCallBack)
     ```
 
 
   - Example: 
     ```js
-    addAnim('flipOver', {
-      duration: 3000,
-      rotateX: 360,
-    })
+    addAnim(
+      'flipOver', 
+      {
+        duration: 3000,
+        rotateX: 360,
+      },
+      () => { console.log('enter flipover')},
+      () => { console.log('exit flipover')}
+    )
     ```
 
   - for more info about **animejsProperties** checkout https://animejs.com/documentation/
@@ -132,11 +137,10 @@ export default class Example extends React.Component {
   - Method
     ```js
       addTransition(
-            fromAnimation, 
-            toAnimation, 
-            condition, 
-            onEnterCallBack, 
-            onExitCallBack)
+          fromAnimation, 
+          toAnimation, 
+          condition,  
+      )
     ```
   - Example:
     ```js
@@ -144,8 +148,6 @@ export default class Example extends React.Component {
         'flyright',
         'flyleft',
         () => { window.scrollY > 600 },
-        () => { console.log('enter flyleft')},
-        () => { console.log('exit flyleft')}
       )
     ```
 
@@ -157,8 +159,6 @@ export default class Example extends React.Component {
           // timeRatio = currentAnimTime / totalAnimDuration
           return timeRatio > 0.8
         },
-        () => { console.log('enter flyleft')},
-        () => { console.log('exit flyleft')}
       )
     ```
 
@@ -167,9 +167,7 @@ export default class Example extends React.Component {
       addTransition( 
         'flyright',
         'flyleft',
-        'auto', // equivalent to timeRatio === 1
-        () => { console.log('enter flyleft')},
-        () => { console.log('exit flyleft')}
+        'auto' // equivalent to timeRatio === 1
       )
     ```
 ---------
