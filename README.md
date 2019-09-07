@@ -146,16 +146,16 @@ export default class Example extends React.Component {
     ```
 
     ```js
-        addTransition( 
-          'flyright',
-          'flyleft',
-          (timeRatio) => {
-            // timeRatio = currentAnimTime / totalAnimDuration
-            return timeRatio > 0.8
-          },
-          () => { console.log('enter flyleft')},
-          () => { console.log('exit flyleft')}
-        )
+      addTransition( 
+        'flyright',
+        'flyleft',
+        (timeRatio) => {
+          // timeRatio = currentAnimTime / totalAnimDuration
+          return timeRatio > 0.8
+        },
+        () => { console.log('enter flyleft')},
+        () => { console.log('exit flyleft')}
+      )
     ```
 
     ```js
