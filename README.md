@@ -108,7 +108,7 @@ export default class Example extends React.Component {
   ```
 
 
-### ADANIMATIONS
+### ADD ANIMATIONS
 
   - Method:
   
@@ -128,7 +128,7 @@ export default class Example extends React.Component {
   - for more info about **animejsProperties** checkout https://animejs.com/documentation/
 
 -----------
-## ADD TRANSITIONS
+### ADD TRANSITIONS
   - Method
     ```js
       addTransition(
@@ -173,7 +173,7 @@ export default class Example extends React.Component {
       )
     ```
 ---------
-## VISUAL PROFILING TOOL
+### VISUAL PROFILING TOOL
 
   ```js
     enableWindowProfiling()
