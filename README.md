@@ -78,51 +78,58 @@ export default class Example extends React.Component {
 ```
 
 
-# APIs 
-  - Components breakdown:
+## APIs 
+
   
-  ------------------------
-  ## ANIM STATE MACHINE (ASM)
-    - Method
-    ``` js 
-    new ASM(object) 
-    ```
-    - Example:
-    ``` js
-    function MyObject() {
-      const myObjectRef = useRef();
-    
-      useEffect(() => {
-        // can be innitialized by one of the method below
-        var animeStateMachine = new ASM(myObjectRef)
-        var animeStateMachine = new ASM('#myObjectId')
-        var animeStateMachine = new ASM('.myObjectclass')
-      });
+------------------------
+### ANIM STATE MACHINE (ASM)
 
-      return (
-        <div id='myObjectId' className='myObjectClass' ref={ref => myObjectRef = ref}> </div>
-      );
-    }
+- Method
+  ``` js 
+  new ASM(object) 
   ```
-    
-  -----------
-  ## ADD ANIMATIONS
-    - Method:
-    ```js
-      addAnim(animationName, animejsProperties)
-    ```
-    - Example: 
-    ```js
-      addAnim('flipOver', {
-        duration: 3000,
-        rotateX: 360,
-      })
-    ```
-    - for more info about **animejsProperties** checkout https://animejs.com/documentation/
+- Example:
 
-  -----------
-  ## ADD TRANSITIONS
-    - Method
+  ```js
+  function MyObject() {
+    const myObjectRef = useRef();
+  
+    useEffect(() => {
+      // can be innitialized by one of the method below
+      var animeStateMachine = new ASM(myObjectRef)
+      var animeStateMachine = new ASM('#myObjectId')
+      var animeStateMachine = new ASM('.myObjectclass')
+    });
+
+    return (
+      <div id='myObjectId' className='myObjectClass' ref={ref => myObjectRef = ref}> </div>
+    );
+  }
+  ```
+
+
+### ADANIMATIONS
+
+  - Method:
+  
+    ```js
+    addAnim(animationName,animejsProperties)
+    ```
+
+
+  - Example: 
+    ```js
+    addAnim('flipOver', {
+      duration: 3000,
+      rotateX: 360,
+    })
+    ```
+
+  - for more info about **animejsProperties** checkout https://animejs.com/documentation/
+
+-----------
+## ADD TRANSITIONS
+  - Method
     ```js
       addTransition(
             fromAnimation, 
@@ -131,10 +138,7 @@ export default class Example extends React.Component {
             onEnterCallBack, 
             onExitCallBack)
     ```
-
-
-
-    - Example:
+  - Example:
     ```js
       addTransition( 
         'flyright',
@@ -168,12 +172,12 @@ export default class Example extends React.Component {
         () => { console.log('exit flyleft')}
       )
     ```
-  ---------
-  ## VISUAL PROFILING TOOL
+---------
+## VISUAL PROFILING TOOL
 
-    ```js
-      enableWindowProfiling()
-    ```
+  ```js
+    enableWindowProfiling()
+  ```
 
 ## Screenshots
   ![](https://github.com/tphuc/anime-state-machine/blob/master/docs/Screen%20Shot%202019-09-03%20at%201.51.30%20PM.png?raw=true)
