@@ -1,7 +1,7 @@
 import anime from 'animejs';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import AnimBlueprint from '../example-1/AnimBlueprint'
+import AnimBlueprint from './AnimBlueprint'
 
 
 export const creatAnimation = (animName, animProps, onEnter, onExit) => {
@@ -9,7 +9,7 @@ export const creatAnimation = (animName, animProps, onEnter, onExit) => {
 }
 
 
-export class AnimStateMachine {
+export default class AnimStateMachine {
     constructor(target) {
         this.target = target
         this.animGraph = []
@@ -51,11 +51,10 @@ export class AnimStateMachine {
     }
 
     loop = (t) => {
-        var animToPlay = this.getAnimNodeByName(this.getCurrentPlayingAnim().getNextAnim())
+        var animToPlay = this.getAnimNodeByName(this.getCurrentPlayingAnim().getNextAnim(this.playAnim))
         if (animToPlay.getName() !== this.currentPlayingAnim) {
             this.playAnim = animToPlay.getAnimeInstance(this.target)
             this.currentPlayingAnim = animToPlay.getName()
-
         }
         if (this.AnimBlueprint) this.AnimBlueprint.setActiveNode(this.getAnimNodeByName(this.currentPlayingAnim))
 
@@ -100,7 +99,12 @@ export class AnimTransition {
         this.condition = condition
     }
 
-    conditionEvaluate = () => {
+    conditionEvaluate = (timeRatio) => {
+        
+        if(this.condition instanceof String || typeof this.condition === 'string'){
+            return timeRatio === 1 ? this.toAnim : this.fromAnim
+        }
+            
         return this.condition() ? this.toAnim : this.fromAnim
     }
 }
@@ -127,10 +131,10 @@ export class AnimNode {
         return transition
     }
 
-    getNextAnim = () => {
+    getNextAnim = (anim) => {
         for (var i = 0; i < this.transitions.length; i++) {
-            var animName = this.transitions[i].conditionEvaluate()
-            if (this.transitions[i].conditionEvaluate() !== this.name) return animName
+            var animName = this.transitions[i].conditionEvaluate(anim.currentTime / anim.duration)
+            if (animName !== this.name) return animName
         }
         return this.name
     }
@@ -141,9 +145,9 @@ export class AnimNode {
             begin: this.onEnter,
             ...this.animeJsProps,
             autoplay: false,
-            complete: this.onExit,
+            complete: () => {
+                if(this.onExit) this.onExit()
+            },
         })
     }
-
-
 }
